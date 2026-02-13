@@ -1,0 +1,8 @@
+# Git Ignore
+.DS_Store
+*.log
+node_modules/
+.gemini/
+.agent/
+workshop-template.html
+information.md

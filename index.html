@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html class="dark" lang="de">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Autotechnik Rohde - Meisterbetrieb in Hamburg Harburg</title>
+    <meta name="description"
+        content="Professionelle Autowerkstatt in Hamburg Harburg. Über 35 Jahre Erfahrung in 2. Generation. Spezialisten für Autogas, Instandsetzung und KFZ-Service aller Marken.">
+
+    <!-- Scripts & Styles -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet">
+
+    <!-- React Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.production.min.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.production.min.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #e31e24;
+            --primary-dark: #b91c1c;
+            --accent: #3b82f6;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background-color: #0a0c10;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+
+        .glass {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-title {
+            background: linear-gradient(to bottom right, #fff 30%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.1) rotate(5deg);
+            color: var(--primary);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0c10;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+
+        .image-overlay {
+            background: linear-gradient(to top, #0a0c10 0%, rgba(10, 12, 16, 0.4) 50%, transparent 100%);
+        }
+    </style>
+</head>
+
+<body class="text-gray-200">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { HashRouter, Routes, Route, Link, useLocation } = ReactRouterDOM;
+
+        const CONFIG = {
+            company: {
+                name: "Rohde Autotechnik",
+                logo: "./Reale Bilder/Logo.png",
+                phone: "040 / 766 46 95",
+                email: "info@rohde-autotechnik.de",
+                address: "Penzweg 3 a, 21079 Hamburg",
+                hours: "Mo - Fr: 9:00 - 19:00 Uhr"
+            }
+        };
+
+        const Navbar = () => {
+            const [scrolled, setScrolled] = useState(false);
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'py-3 glass shadow-2xl' : 'py-6 bg-transparent'}`}>
+                    <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                        <Link to="/" className="flex items-center gap-3 group">
+                            <img src={CONFIG.company.logo} alt="Logo" className="h-12 w-auto group-hover:scale-105 transition-transform" />
+                            <div className="hidden sm:block">
+                                <span className="block text-xl font-bold tracking-tight text-white capitalize leading-none">Autotechnik</span>
+                                <span className="text-primary font-black text-2xl uppercase leading-none">Rohde</span>
+                            </div>
+                        </Link>
+
+                        <div className="hidden md:flex items-center gap-8">
+                            <a href="#leistungen" className="text-sm font-semibold hover:text-primary transition-colors">Leistungen</a>
+                            <a href="#ueber-uns" className="text-sm font-semibold hover:text-primary transition-colors">Über uns</a>
+                            <a href="#kontakt" className="text-sm font-semibold hover:text-primary transition-colors">Kontakt</a>
+                            <a href={`tel:${CONFIG.company.phone.replace(/\s/g, '')}`} className="bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5">
+                                Jetzt anrufen
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            );
+        };
+
+        const Hero = () => (
+            <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <img src="./Mock-Bilder/main.avif" alt="Werkstatt" className="w-full h-full object-cover opacity-40 scale-105" />
+                    <div className="absolute inset-0 image-overlay"></div>
+                </div>
+
+                <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-8 border-primary/20 animate-fade-in">
+                        <span className="relative flex h-3 w-3">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-widest text-primary">Meisterbetrieb in 2. Generation</span>
+                    </div>
+
+                    <h1 className="text-5xl md:text-8xl font-black mb-6 leading-tight">
+                        <span className="hero-title inline-block">FACHLICH. FREUNDLICH.</span><br />
+                        <span className="text-primary italic uppercase tracking-tighter">FAIR.</span>
+                    </h1>
+
+                    <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 mb-12 font-medium">
+                        Ihre professionelle Werkstatt in Hamburg. Wir kümmern uns um Reparatur- und Wartungsarbeiten mit bestem Service seit über 35 Jahren.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                        <a href="#leistungen" className="w-full sm:w-auto bg-primary hover:bg-primary-dark text-white px-10 py-5 rounded-2xl font-black text-lg shadow-2xl shadow-primary/30 transition-all hover:-translate-y-1">
+                            Unsere Leistungen
+                        </a>
+                        <a href="#kontakt" className="w-full sm:w-auto glass hover:bg-white/10 text-white px-10 py-5 rounded-2xl font-black text-lg transition-all">
+                            Termin vereinbaren
+                        </a>
+                    </div>
+                </div>
+
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+                    <span className="material-symbols-outlined text-4xl">expand_more</span>
+                </div>
+            </section>
+        );
+
+        const ServiceCard = ({ title, icon, items, image }) => (
+            <div className="service-card group glass rounded-[2.5rem] overflow-hidden transition-all duration-500 hover:border-primary/50">
+                <div className="h-48 overflow-hidden relative">
+                    <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0c10] to-transparent"></div>
+                </div>
+                <div className="p-10">
+                    <div className="service-icon w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 transition-all duration-500">
+                        <span className="material-symbols-outlined text-3xl font-light">{icon}</span>
+                    </div>
+                    <h3 className="text-2xl font-black mb-4 group-hover:text-white transition-colors uppercase italic tracking-tight">{title}</h3>
+                    <ul className="space-y-3">
+                        {items.map((item, i) => (
+                            <li key={i} className="flex items-start gap-2 text-gray-400 font-medium">
+                                <span className="material-symbols-outlined text-primary text-sm mt-1">check_circle</span>
+                                {item}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        );
+
+        const Services = () => (
+            <section id="leistungen" className="py-32 bg-[#0a0c10]">
+                <div className="max-w-7xl mx-auto px-6">
+                    <div className="text-center mb-20">
+                        <h2 className="text-sm font-black uppercase tracking-[0.3em] text-primary mb-4">Meisterqualität</h2>
+                        <h3 className="text-4xl md:text-6xl font-black text-white italic uppercase">Unsere Leistungen</h3>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <ServiceCard
+                            title="Autogas (LPG)"
+                            icon="gas_meter"
+                            image="./Mock-Bilder/diagnose.avif"
+                            items={["Autogasumrüstung", "Autogaswartung", "Fachgerechte Reparatur"]}
+                        />
+                        <ServiceCard
+                            title="Instandsetzung"
+                            icon="build_circle"
+                            image="./Mock-Bilder/bremse.avif"
+                            items={["Steuergeräte & Tachos", "Getriebe-Instandsetzung", "Turbolader-Service", "Karosseriearbeiten"]}
+                        />
+                        <ServiceCard
+                            title="Reifen-Service"
+                            icon="tire_repair"
+                            image="./Mock-Bilder/reifenservice.avif"
+                            items={["Montage & Wuchten", "Reifeneinlagerung", "Verkauf von Premiumreifen"]}
+                        />
+                        <ServiceCard
+                            title="Autoglas"
+                            icon="visibility"
+                            image="./Mock-Bilder/steinschlag.jpg"
+                            items={["Steinschlagreparatur", "Scheibenwechsel", "Sonnenschutzfolierung"]}
+                        />
+                        <ServiceCard
+                            title="Unfallservice"
+                            icon="car_crash"
+                            image="./Mock-Bilder/unfallservice.avif"
+                            items={["Unfallgutachten", "Schadenmanagement", "Leihwagen-Service", "Fachgerechte Reparatur"]}
+                        />
+                        <ServiceCard
+                            title="Spezial-Service"
+                            icon="settings_suggest"
+                            image="./Mock-Bilder/lackierung.avif"
+                            items={["Elektronische Diagnose", "Lackierungen", "Achsvermessung", "Getriebespülung"]}
+                        />
+                    </div>
+                </div>
+            </section>
+        );
+
+        const About = () => (
+            <section id="ueber-uns" className="py-32 bg-[#0d121b] relative overflow-hidden">
+                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+                    <div className="relative">
+                        <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/20 blur-[100px] rounded-full"></div>
+                        <img src="./Mock-Bilder/main.avif" alt="Jakob Rohde" className="relative rounded-[3rem] shadow-2xl grayscale hover:grayscale-0 transition-all duration-700" />
+                        <div className="absolute -bottom-10 -right-10 glass p-8 rounded-3xl animate-float">
+                            <span className="block text-4xl font-black text-primary">35+</span>
+                            <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Jahre Erfahrung</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 className="text-sm font-black uppercase tracking-[0.3em] text-primary mb-4">Familientradition</h2>
+                        <h3 className="text-4xl md:text-5xl font-black text-white mb-8 italic uppercase leading-tight text-balance">
+                            Jakob Rohde - Seit 1988 im Harburger Raum
+                        </h3>
+                        <div className="space-y-6 text-gray-400 text-lg leading-relaxed font-medium">
+                            <p>
+                                Jakob Rohde gründete 1988 seine Kfz.-Werkstatt und ist seitdem aus Harburg nicht mehr wegzudenken.
+                                Heute führen seine Kinder Janine und Marcel den Betrieb mit der gleichen Leidenschaft weiter.
+                            </p>
+                            <p>
+                                Alle Fabrikate jeglichen Jahrgangs sind bei uns willkommen. Wir arbeiten mit modernster Diagnose-Technik
+                                und erstklassiger Ausstattung in einer familiären Atmosphäre.
+                            </p>
+                            <div className="pt-6 grid grid-cols-2 gap-4">
+                                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                    <span className="block text-white font-bold mb-1 italic uppercase">Tradition</span>
+                                    <span className="text-sm text-gray-500">Ehrlich & Direkt</span>
+                                </div>
+                                <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                                    <span className="block text-white font-bold mb-1 italic uppercase">Modernität</span>
+                                    <span className="text-sm text-gray-500">High-Tech Diagnose</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Contact = () => {
+            const [status, setStatus] = useState(null);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setStatus('loading');
+                setTimeout(() => setStatus('success'), 1500);
+            };
+
+            return (
+                <section id="kontakt" className="py-32 bg-[#0a0c10]">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="grid lg:grid-cols-12 gap-16">
+                            <div className="lg:col-span-5 space-y-12">
+                                <div>
+                                    <h2 className="text-sm font-black uppercase tracking-[0.3em] text-primary mb-4">Kontakt</h2>
+                                    <h3 className="text-4xl md:text-6xl font-black text-white italic uppercase">Besuchen Sie uns</h3>
+                                </div>
+
+                                <div className="space-y-6">
+                                    <div className="flex gap-6 p-8 glass rounded-3xl hover:-translate-y-1 transition-all">
+                                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0">
+                                            <span className="material-symbols-outlined">map</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-500 text-xs font-black uppercase tracking-widest mb-1">Standort</p>
+                                            <p className="text-white font-bold text-lg">{CONFIG.company.address}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-6 p-8 glass rounded-3xl hover:-translate-y-1 transition-all">
+                                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0">
+                                            <span className="material-symbols-outlined">schedule</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-500 text-xs font-black uppercase tracking-widest mb-1">Öffnungszeiten</p>
+                                            <p className="text-white font-bold text-lg">{CONFIG.company.hours}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-6 p-8 glass rounded-3xl hover:-translate-y-1 transition-all">
+                                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0">
+                                            <span className="material-symbols-outlined">phone</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-500 text-xs font-black uppercase tracking-widest mb-1">Telefon</p>
+                                            <p className="text-white font-bold text-lg">{CONFIG.company.phone}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-7">
+                                <div className="p-10 md:p-16 glass rounded-[3rem] shadow-2xl relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 p-16 bg-primary/20 blur-[120px] rounded-full pointer-events-none group-hover:bg-primary/30 transition-all"></div>
+
+                                    {status === 'success' ? (
+                                        <div className="text-center py-20 space-y-6">
+                                            <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
+                                                <span className="material-symbols-outlined text-5xl fill">check_circle</span>
+                                            </div>
+                                            <h4 className="text-3xl font-black text-white italic uppercase">Vielen Dank!</h4>
+                                            <p className="text-gray-400">Wir haben Ihre Anfrage erhalten und melden uns in Kürze.</p>
+                                            <button onClick={() => setStatus(null)} className="text-primary font-bold uppercase tracking-widest text-sm hover:underline">Neue Nachricht</button>
+                                        </div>
+                                    ) : (
+                                        <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                                            <div className="grid md:grid-cols-2 gap-6">
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Name</label>
+                                                    <input required className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary focus:ring-0 transition-all" placeholder="Erica Mustermann" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">E-Mail</label>
+                                                    <input required type="email" className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary focus:ring-0 transition-all" placeholder="erika@beispiel.de" />
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-xs font-black uppercase tracking-widest text-gray-500 ml-4">Nachricht</label>
+                                                <textarea required rows="4" className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-white focus:border-primary focus:ring-0 transition-all" placeholder="Wie können wir Ihnen helfen?"></textarea>
+                                            </div>
+                                            <button className="w-full bg-primary hover:bg-primary-dark text-white py-5 rounded-2xl font-black text-lg transition-all shadow-xl shadow-primary/20">
+                                                {status === 'loading' ? 'Wird gesendet...' : 'NACHRICHT SENDEN'}
+                                            </button>
+                                        </form>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Footer = () => (
+            <footer className="py-20 bg-[#07090d] border-t border-white/5">
+                <div className="max-w-7xl mx-auto px-6 text-center">
+                    <img src={CONFIG.company.logo} alt="Logo" className="h-16 mx-auto mb-8 opacity-50 contrast-125" />
+                    <div className="flex flex-wrap justify-center gap-8 mb-12">
+                        <a href="#" className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors">Impressum</a>
+                        <a href="#" className="text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-white transition-colors">Datenschutz</a>
+                    </div>
+                    <p className="text-xs font-black uppercase tracking-[0.5em] text-gray-600">
+                        &copy; 2026 Autotechnik Rohde. Crafted with Premium Design.
+                    </p>
+                </div>
+            </footer>
+        );
+
+        const App = () => (
+            <div className="min-h-screen">
+                <Navbar />
+                <Hero />
+                <Services />
+                <About />
+                <Contact />
+                <Footer />
+
+                {/* Float CTA for Mobile */}
+                <div className="fixed bottom-6 right-6 md:hidden z-50">
+                    <a href={`tel:${CONFIG.company.phone.replace(/\s/g, '')}`} className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white shadow-2xl animate-bounce">
+                        <span className="material-symbols-outlined text-3xl fill">phone_in_talk</span>
+                    </a>
+                </div>
+            </div>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<HashRouter><App /></HashRouter>);
+    </script>
+</body>
+
+</html>
